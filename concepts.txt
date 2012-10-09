@@ -1,0 +1,54 @@
+- Variables
+    - Assignment
+    - Using variables in expressions
+- Numbers
+    - Int literals
+    - Int arithmetic
+    - Float literals
+    - Float arithmetic
+    - Compound arithmetic expressions
+    - Mixing int and float arithmetic
+- Strings
+    - Literals
+    - Subscripting/indexing
+    - Simple slicing
+    - Slicing with omitted start or end values
+    - Negative indexing
+    - Slicing with negative indices
+    - Slicing with a step value
+    - String concatenation
+    - Using len()
+- Printing
+    - Printing strings
+    - Printing numbers
+    - Formatting strings
+- Lists
+    - Literals
+    - Subscripting/indexing
+    - Simple slicing
+    - Slicing with omitted start or end values
+    - Negative indexing
+    - Slicing with negative indices
+    - Slicing with a step value
+    - Appending values
+    - Inserting values
+    - Extending lists, list concatenation
+    - Using len()
+- Dictionaries
+    - Literals
+    - Adding entries
+    - Accessing entries with subscripting
+    - Accessing entries with get()
+- General looping
+    - Break
+    - Continue
+- While loops
+    - Infinite loops
+    - Loops with a condition
+    - Priting in loops
+- For loops
+    - Iterating over lists
+    - Iterating over strings
+    - Iterating over dicts
+- Tuples
+- Functions
