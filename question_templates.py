@@ -4,15 +4,16 @@ from user_interface import *
 import random
 import ast
 
-def type_of_literal():
-    literal_gens = {
-        str: gen.str_gen,
-        int: gen.int_gen,
-        float: gen.float_gen,
-        list: gen.list_gen,
-        dict: gen.dict_gen
-    }
+literal_gens = {
+    str: gen.str_gen,
+    int: gen.int_gen,
+    float: gen.float_gen,
+    list: gen.list_gen,
+    dict: gen.dict_gen
+}
 
+def type_of_literal():
+    global literal_gens
     literal_type, literal_gen = random.choice(literal_gens.items())
     literal = literal_gen.next()
 
@@ -22,6 +23,21 @@ def type_of_literal():
         choices.sort(key=lambda choice: choice[0])
         answer = multiple_choice(choices)
         return answer == literal_type
+    return question
+
+def literal_of_type():
+    """Pick the literal of the given type from a list of options."""
+    global literal_gens
+    random_type = random.choice(literal_gens.keys())
+
+    def question():
+        text = "Select the value of type {0}:".format(random_type.__name__)
+        show_text(text)
+        choices = [(type_gen.next(), type_obj)
+                   for type_obj, type_gen in literal_gens.iteritems()]
+        random.shuffle(choices)
+        answer = multiple_choice(choices)
+        return answer == random_type
     return question
 
 def list_subscripting():
@@ -54,4 +70,4 @@ def ordinal_suffix(n):
     else:
         return {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
 
-templates = (type_of_literal, list_subscripting)
+templates = (type_of_literal, literal_of_type, list_subscripting)
