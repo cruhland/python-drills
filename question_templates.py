@@ -25,15 +25,16 @@ def type_of_literal():
     return question
 
 def list_subscripting():
+    list_var = gen.str_gen.next()
     a_list = gen.make_filter(lambda seq: len(seq) > 0)(gen.list_gen).next()
     index = random.randrange(len(a_list))
-    message = "Let some_list = %r. " + \
-              "Select the element at index %d in some_list."
+    message = "Let {var} = {value}. " + \
+              "Select the element at index {index} in {var}."
     def question():
-        show_text(message % (a_list, index))
+        show_text(message.format(var=list_var, value=a_list, index=index))
         answer = raw_input(">>> ")
         parsed_answer = ast.parse(answer)
-        list_name_correct = parsed_answer.body[0].value.value.id == 'some_list'
+        list_name_correct = parsed_answer.body[0].value.value.id == list_var
         list_index_correct = parsed_answer.body[0].value.slice.value.n == index
         return list_name_correct and list_index_correct
     return question
