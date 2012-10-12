@@ -6,15 +6,15 @@ import ast
 
 def type_of_literal():
     literal_gens = {
-        str: gen.any_str,
-        int: gen.any_int,
-        float: gen.any_float,
-        list: gen.any_list,
-        dict: gen.any_dict
+        str: gen.str_gen,
+        int: gen.int_gen,
+        float: gen.float_gen,
+        list: gen.list_gen,
+        dict: gen.dict_gen
     }
 
     literal_type, literal_gen = random.choice(literal_gens.items())
-    literal = literal_gen()
+    literal = literal_gen.next()
 
     def question():
         show_text("Select the type of this value: %r" % literal)
@@ -25,7 +25,7 @@ def type_of_literal():
     return question
 
 def list_subscripting():
-    a_list = gen.any_list()
+    a_list = gen.make_filter(lambda seq: len(seq) > 0)(gen.list_gen).next()
     index = random.randrange(len(a_list))
     message = "Let some_list = %r. " + \
               "Select the element at index %d in some_list."
