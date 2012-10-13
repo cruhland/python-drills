@@ -33,7 +33,7 @@ def literal_of_type():
     def question():
         text = "Select the value of type {0}:".format(random_type.__name__)
         show_text(text)
-        choices = [(type_gen.next(), type_obj)
+        choices = [(repr(type_gen.next()), type_obj)
                    for type_obj, type_gen in literal_gens.iteritems()]
         random.shuffle(choices)
         answer = multiple_choice(choices)
@@ -42,10 +42,13 @@ def literal_of_type():
 
 def list_subscripting():
     list_var = gen.str_gen.next()
-    a_list = gen.make_filter(lambda seq: len(seq) > 0)(gen.list_gen).next()
+    element_name, seq_gen = \
+        random.choice([("element", gen.list_gen), ("character", gen.str_gen)])
+    a_list = gen.make_filter(lambda seq: len(seq) > 0)(seq_gen).next()
     index = random.randrange(len(a_list))
-    position = random.choice([index_position, ordinal_position])(index)
-    message = "Let {var} = {value}. Select the {position} in {var}."
+    position_func = random.choice([index_position, ordinal_position])
+    position = position_func(index, element_name)
+    message = "Let {var} = {value!r}. Select the {position} in {var}."
 
     def question():
         text = message.format(var=list_var, value=a_list, position=position)
@@ -57,12 +60,17 @@ def list_subscripting():
         return list_name_correct and list_index_correct
     return question
 
-def index_position(index):
-    return "element at index {index}".format(index=index)
+def index_position(index, element_name):
+    text = "{element} at index {index}"
+    return text.format(element=element_name, index=index)
 
-def ordinal_position(index):
+def ordinal_position(index, element_name):
     n = index + 1
-    return "{n}{suffix} element".format(n=n, suffix=ordinal_suffix(n))
+    return "{n}{suffix} {element}".format(
+        n=n,
+        suffix=ordinal_suffix(n),
+        element=element_name
+    )
 
 def ordinal_suffix(n):
     if 11 <= n % 100 <= 13:
