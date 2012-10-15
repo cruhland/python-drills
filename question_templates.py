@@ -40,6 +40,41 @@ def literal_of_type():
         return answer == random_type
     return question
 
+def assignment():
+    """Assign a value to a variable."""
+    global literal_gens
+    random_variable = gen.str_gen.next()
+    random_value = random.choice(literal_gens.values()).next()
+
+    def question():
+        template = "Assign the value {0!r} to the variable {1}."
+        show_text(template.format(random_value, random_variable))
+        answer = raw_input(">>> ")
+        parsed_answer = ast.parse(answer)
+        parsed_variable = parsed_answer.body[0].targets[0].id
+        variable_name_correct = parsed_variable == random_variable
+
+        parsed_literal = extract_literal(parsed_answer.body[0].value)
+        literal_correct = parsed_literal == random_value
+
+        return variable_name_correct and literal_correct
+    return question
+
+def extract_literal(ast_node):
+    node_type = type(ast_node)
+    if node_type == ast.Num:
+        return ast_node.n
+    elif node_type == ast.Str:
+        return ast_node.s
+    elif node_type == ast.List:
+        return [extract_literal(e) for e in ast_node.elts]
+    elif node_type == ast.Dict:
+        return {extract_literal(ast_node.keys[i]):
+                    extract_literal(ast_node.values[i])
+                for i in xrange(len(ast_node.keys))}
+    else:
+        raise TypeError("Unknown literal type")
+
 def list_subscripting():
     list_var = gen.str_gen.next()
     element_name, seq_gen = \
@@ -78,4 +113,4 @@ def ordinal_suffix(n):
     else:
         return {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
 
-templates = (type_of_literal, literal_of_type, list_subscripting)
+templates = (type_of_literal, literal_of_type, assignment, list_subscripting)

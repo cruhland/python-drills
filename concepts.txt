@@ -1,16 +1,16 @@
 - Variables
-    - Assignment
+    * Assignment
     - Using variables in expressions
 - Numbers
-    - Int literals
+    * Int literals
     - Int arithmetic
-    - Float literals
+    * Float literals
     - Float arithmetic
     - Compound arithmetic expressions
     - Mixing int and float arithmetic
 - Strings
-    - Literals
-    - Subscripting/indexing
+    * Literals
+    * Subscripting/indexing
     - Simple slicing
     - Slicing with omitted start or end values
     - Negative indexing
@@ -23,8 +23,8 @@
     - Printing numbers
     - Formatting strings
 - Lists
-    - Literals
-    - Subscripting/indexing
+    * Literals
+    * Subscripting/indexing
     - Simple slicing
     - Slicing with omitted start or end values
     - Negative indexing
@@ -35,7 +35,7 @@
     - Extending lists, list concatenation
     - Using len()
 - Dictionaries
-    - Literals
+    * Literals
     - Adding entries
     - Accessing entries with subscripting
     - Accessing entries with get()
