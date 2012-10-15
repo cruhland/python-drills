@@ -113,4 +113,9 @@ def ordinal_suffix(n):
     else:
         return {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
 
-templates = (type_of_literal, literal_of_type, assignment, list_subscripting)
+templates = {
+    "type_of_literal": type_of_literal, 
+    "literal_of_type": literal_of_type,
+    "assignment": assignment,
+    "list_subscripting": list_subscripting
+}

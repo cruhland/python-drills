@@ -1,15 +1,21 @@
 #!/usr/bin/env python2
 
 import random
-import question_templates
+from sys import argv
+from question_templates import templates
 
 def main():
     print
     print "Python drills"
     print "At any time, press ^D to skip a question, or ^C to quit."
 
+    if len(argv) > 1:
+        question_selection = [templates[name] for name in argv[1:]]
+    else:
+        question_selection = templates.values()
+
     while True:
-        template = random.choice(question_templates.templates)
+        template = random.choice(question_selection)
         question = template()
         while True:
             print
