@@ -81,7 +81,7 @@ def list_subscripting():
         random.choice([("element", gen.list_gen), ("character", gen.str_gen)])
     a_list = gen.make_filter(lambda seq: len(seq) > 0)(seq_gen).next()
     index = random.randrange(len(a_list))
-    position_func = random.choice([index_position, ordinal_position])
+    position_func = random_position_func()
     position = position_func(index, element_name)
     message = "Let {var} = {value!r}. Select the {position} in {var}."
 
@@ -94,6 +94,34 @@ def list_subscripting():
         list_index_correct = parsed_answer.body[0].value.slice.value.n == index
         return list_name_correct and list_index_correct
     return question
+
+def simple_slicing():
+    seq_var = gen.str_gen.next()
+    element_name, seq_gen = \
+        random.choice([("element", gen.list_gen), ("character", gen.str_gen)])
+    seq = gen.make_filter(lambda seq: len(seq) > 0)(seq_gen).next()
+    start_index = random.randrange(len(seq))
+    stop_index = random.randrange(start_index, len(seq)) + 1
+    template = "We have {var} = {value!r}. Select the range from the " \
+        "{start_pos} up to, but not including, the {end_pos}."
+    start_position = random_position_func()(start_index, element_name)
+    stop_position = random_position_func()(stop_index, element_name)
+    text = template.format(var=seq_var, value=seq, start_pos=start_position,
+                           end_pos=stop_position)
+
+    def question():
+        show_text(text)
+        answer = raw_input(">>> ")
+        parsed_answer = ast.parse(answer)
+        parsed_expr = parsed_answer.body[0].value
+        seq_name_correct = parsed_expr.value.id == seq_var
+        slice_start_correct = parsed_expr.slice.lower.n == start_index
+        slice_stop_correct = parsed_expr.slice.upper.n == stop_index
+        return seq_name_correct and slice_start_correct and slice_stop_correct
+    return question
+
+def random_position_func():
+    return random.choice([index_position, ordinal_position])
 
 def index_position(index, element_name):
     text = "{element} at index {index}"
@@ -117,5 +145,6 @@ templates = {
     "type_of_literal": type_of_literal, 
     "literal_of_type": literal_of_type,
     "assignment": assignment,
-    "list_subscripting": list_subscripting
+    "list_subscripting": list_subscripting,
+    "simple_slicing": simple_slicing
 }
